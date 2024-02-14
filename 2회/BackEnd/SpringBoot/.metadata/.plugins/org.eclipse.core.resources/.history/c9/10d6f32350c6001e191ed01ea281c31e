@@ -1,0 +1,208 @@
+package com.dw.Monaca.dto;
+
+import jakarta.validation.constraints.NotNull;
+
+public class LectureDto {
+
+	private Long id;
+	
+	// 강의 업로드한 사람
+	private String author;
+
+	// 강의 카테고리
+	@NotNull
+	private String lectureCategory;
+	
+	// 강의 제목
+	@NotNull
+	private String lectureName;
+	
+	// 강의 상세 설명 (부제목)
+	private String lectureDescription;
+
+	// 과목 담당 교수
+	private String professor;
+		
+	// 강의 재생 시간
+	@NotNull
+	private int lecturePlayTime;
+	
+	// 강의 메인 이미지
+	@NotNull
+	private String image;
+	
+	// 강의 상세 설명 ( 상세 페이지 상단 위치함.)
+	private String explain;
+
+	// 강의 목표
+	private String objectives;
+	
+	// 강의 가격
+	@NotNull
+	private Integer price;
+	
+	// 강의 영상 ( 사진으로 대체함. )
+	@NotNull
+	private String video;
+	
+	// 생성 일자
+	private String createAt;
+
+	
+	public LectureDto() {
+		super();
+	}
+
+
+	public LectureDto(Long id, String author, @NotNull String lectureCategory, @NotNull String lectureName,
+			String lectureDescription, String professor, @NotNull int lecturePlayTime, @NotNull String image,
+			String explain, String objectives, @NotNull Integer price, @NotNull String video, String createAt) {
+		super();
+		this.id = id;
+		this.author = author;
+		this.lectureCategory = lectureCategory;
+		this.lectureName = lectureName;
+		this.lectureDescription = lectureDescription;
+		this.professor = professor;
+		this.lecturePlayTime = lecturePlayTime;
+		this.image = image;
+		this.explain = explain;
+		this.objectives = objectives;
+		this.price = price;
+		this.video = video;
+		this.createAt = createAt;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getAuthor() {
+		return author;
+	}
+
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+
+	public String getLectureCategory() {
+		return lectureCategory;
+	}
+
+
+	public void setLectureCategory(String lectureCategory) {
+		this.lectureCategory = lectureCategory;
+	}
+
+
+	public String getLectureName() {
+		return lectureName;
+	}
+
+
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+
+
+	public String getLectureDescription() {
+		return lectureDescription;
+	}
+
+
+	public void setLectureDescription(String lectureDescription) {
+		this.lectureDescription = lectureDescription;
+	}
+
+
+	public String getProfessor() {
+		return professor;
+	}
+
+
+	public void setProfessor(String professor) {
+		this.professor = professor;
+	}
+
+
+	public int getLecturePlayTime() {
+		return lecturePlayTime;
+	}
+
+
+	public void setLecturePlayTime(int lecturePlayTime) {
+		this.lecturePlayTime = lecturePlayTime;
+	}
+
+
+	public String getImage() {
+		return image;
+	}
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+	public String getExplain() {
+		return explain;
+	}
+
+
+	public void setExplain(String explain) {
+		this.explain = explain;
+	}
+
+
+	public String getObjectives() {
+		return objectives;
+	}
+
+
+	public void setObjectives(String objectives) {
+		this.objectives = objectives;
+	}
+
+
+	public Integer getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+
+	public String getVideo() {
+		return video;
+	}
+
+
+	public void setVideo(String video) {
+		this.video = video;
+	}
+
+
+	public String getCreateAt() {
+		return createAt;
+	}
+
+
+	public void setCreateAt(String createAt) {
+		this.createAt = createAt;
+	}
+
+
+
+}

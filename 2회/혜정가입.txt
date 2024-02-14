@@ -1,0 +1,39 @@
+{
+    "loginId":"gPwjd1234",
+    "password":"gPwjd1234@",
+    "name":"염혜정",
+    "nickname":"염혜정",
+    "birthDate":"1000-01-01",
+    "gender":"WOMAN",
+    "email":"gPwjd1234@gmail.com",
+    "phoneNum":"01012345678"
+  
+}
+
+{
+    "loginId":"lee1234",
+    "password":"lee1234@",
+    "name":"이교수",
+    "nickname":"이교수",
+    "birthDate":"1000-01-01",
+    "gender":"WOMAN",
+    "email":"lee@gmail.com",
+    "phoneNum":"01056789123",
+    "professorIntro":"안녕하십니까,저는 이교수입니다.",
+    "professorResume":"경력 알아서 뭐하시게요?",
+    "image":"leepro.jpg"
+}
+
+{
+    "loginId":"kim1234",
+    "password":"kim1234@",
+    "name":"김교수",
+    "nickname":"김교수",
+    "birthDate":"1000-01-01",
+    "gender":"MAN",
+    "email":"kim@gmail.com",
+    "phoneNum":"01056789123",
+    "professorIntro":"안녕하시렵니까,저는 김교수입니다.",
+    "professorResume":"경력 없어유",
+    "image":"kimpro.jpg"
+}

@@ -1,0 +1,5 @@
+package com.dw.Monaca.dto;
+
+public class LectureListDto {
+
+}

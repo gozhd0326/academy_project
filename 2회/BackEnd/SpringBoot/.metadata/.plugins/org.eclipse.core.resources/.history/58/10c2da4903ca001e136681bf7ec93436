@@ -1,0 +1,176 @@
+package com.dw.Monaca.service.impl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dw.Monaca.dto.LectureDto;
+import com.dw.Monaca.dto.ResponseDto;
+import com.dw.Monaca.enumStatus.ResultCode;
+import com.dw.Monaca.exception.InvalidRequestException;
+import com.dw.Monaca.jwtauthority.model.User;
+import com.dw.Monaca.jwtauthority.repository.UserRepository;
+import com.dw.Monaca.jwtauthority.util.SecurityUtil;
+import com.dw.Monaca.model.Lecture;
+import com.dw.Monaca.model.LectureCategory;
+import com.dw.Monaca.repository.LectureCategoryRepository;
+import com.dw.Monaca.repository.LectureRepository;
+import com.dw.Monaca.service.LectureService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class LectureServiceImpl implements LectureService {
+	
+	private final LectureRepository lectureRepository;
+	private final LectureCategoryRepository lectureCategoryRepository;
+	private final UserRepository userRepository;
+
+	@Autowired
+	public LectureServiceImpl(LectureRepository lectureRepository, LectureCategoryRepository lectureCategoryRepository, UserRepository userRepository) {
+		this.lectureRepository = lectureRepository;
+		this.lectureCategoryRepository = lectureCategoryRepository;
+		this.userRepository = userRepository;
+	}
+
+	private User getAuthenticatedUser() {
+	    String currentLoginId = SecurityUtil.getCurrentLoginId()
+	        .orElseThrow(() -> new InvalidRequestException("Authentication", "사용자 인증 정보를 찾을 수 없습니다."));
+	    return userRepository.findByLoginId(currentLoginId)
+	        .orElseThrow(() -> new InvalidRequestException("User Not Found", "회원이 아닙니다."));
+	}
+
+	
+	// 모든 Lecture 불러오기
+	@Override
+	public ResponseDto<List<Lecture>> getAllLecture() {
+		List<Lecture> lectures = lectureRepository.findAll();
+		if (lectures.isEmpty()) {
+			throw new InvalidRequestException("Lecture Empty", "강의가 존재하지 않습니다.");
+		}
+		return new ResponseDto<>(ResultCode.SUCCESS.name(), lectures, ResultCode.SUCCESS.getMsg());
+	}
+
+	// Lecture 카테고리 별 불러오기
+	@Override
+	public ResponseDto<List<Lecture>> getAllLectureByCategoryName(String categoryName) {
+	    LectureCategory category = lectureCategoryRepository.findByCategoryName(categoryName);
+	    List<Lecture> lectures = lectureRepository.findByLectureCategory(category);
+	    
+	    if (lectures.isEmpty()) {
+	        throw new InvalidRequestException("Lecture Empty", "해당 카테고리의 강의가 존재하지 않습니다.");
+	    }
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), lectures, ResultCode.SUCCESS.getMsg());
+	}
+
+	// Professor 별 불러오기
+	@Override
+	public ResponseDto<List<Lecture>> getAllLectureByProfessor(String professor) {
+	    User professorEntity = userRepository.findByName(professor);
+	    List<Lecture> lectures = lectureRepository.findByProfessor(professorEntity);
+	    
+	    if (lectures.isEmpty()) {
+	        throw new InvalidRequestException("Lecture Empty", "해당 교수님의 강의가 존재하지 않습니다.");
+	    }
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), lectures, ResultCode.SUCCESS.getMsg());
+	}
+
+	// 유료강의만 불러오기
+	@Override
+	public ResponseDto<List<Lecture>> getAllLectureByPaidLectures() {
+	    List<Lecture> paidLectures = lectureRepository.findByPriceGreaterThan(0);
+	    if (paidLectures.isEmpty()) {
+	        throw new InvalidRequestException("Lecture Empty", "유료 강의가 존재하지 않습니다.");
+	    }
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), paidLectures, ResultCode.SUCCESS.getMsg());
+	}
+
+	//무료 강의만 불러오기
+	@Override
+	public ResponseDto<List<Lecture>> getAllLectureByFreeLectures() {
+	    List<Lecture> freeLectures = lectureRepository.findByPrice(0);
+	    if (freeLectures.isEmpty()) {
+	        throw new InvalidRequestException("Lecture Empty", "무료 강의가 존재하지 않습니다.");
+	    }
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(), freeLectures, ResultCode.SUCCESS.getMsg());
+	}
+
+	// LecureID로 특정 강의 불러오기
+	@Override
+	public ResponseDto<Lecture> getLectureById(Long id) {
+	 
+		Lecture lecture = lectureRepository.findById(id)
+		.orElseThrow(() -> new InvalidRequestException("Lecture Empty", "강의가 존재하지 않습니다."));
+	
+	  return new ResponseDto<>(ResultCode.SUCCESS.name(), lecture, ResultCode.SUCCESS.getMsg());
+	}
+	
+	// Lecture 업로드
+	@Override
+	public ResponseDto<Lecture> createLecture(LectureDto lectureDto) {
+	    User author = getAuthenticatedUser();
+	    String professorName = lectureDto.getProfessor();
+	    User professor = userRepository.findByName(professorName);
+//	    String LectureCategoryName = lectureDto.getLectureName();
+	    LectureCategory lectureCategory = lectureCategoryRepository.findByCategoryName(lectureDto.getLectureCategory());
+
+	    // Lecture 객체 생성
+	    Lecture lecture = new Lecture();
+	    lecture.setCreateAt(LocalDateTime.now());
+	    lecture.setAuthor(author);
+	    lecture.setProfessor(professor);
+	    lecture.setLectureCategory(lectureCategory);
+	    lecture.setLectureName(lectureDto.getLectureName());
+	    lecture.setPrice(lectureDto.getPrice());
+	    lecture.setLecturePlayTime(lectureDto.getLecturePlayTime());
+	    lecture.setVideo(lectureDto.getVideo());
+	    lecture.setImage(lectureDto.getImage());
+	    lecture.setLectureDescription(lectureDto.getLectureDescription());
+
+		lectureRepository.save(lecture);
+//	    // 해당 강의를 가르치는 교수의 '가르치는 강의' 목록에 이 강의 추가
+	    professor.getLecture().add(lecture);
+//
+//	    // 변경 사항 데이터베이스에 저장
+	    userRepository.save(professor);
+
+	    
+	    return new ResponseDto<>(ResultCode.SUCCESS.name(),null,"강의 등록이 완료되었습니다.");
+	}
+
+
+	// LectureID로 특정 강의 삭제
+	@Override
+	public ResponseDto<String> deleteLectureById(Long id) {
+		User author = getAuthenticatedUser();
+		Optional<Lecture> lectureOptional = lectureRepository.findById(id);
+		
+		if(lectureOptional.isEmpty()) {
+		    throw new InvalidRequestException(Long.toString(id), "해당 Lectue가 존재하지 않습니다.");
+		}
+		
+		Lecture lecture = lectureOptional.get();
+		if(!author.equals(lecture.getAuthor())) {
+			 throw new InvalidRequestException("Unauthorized", "Lecture 작성자가 현재 로그인 한 작성자와 일치하지 않습니다.");
+		}
+		
+		lectureRepository.deleteById(id);
+		
+		return new ResponseDto<>(ResultCode.SUCCESS.name(),null,"Lecture 삭제가 완료되었습니다.");
+	}
+
+//	// LectureID로 특정 강의 수정
+//	@Override
+//	public ResponseDto<Lecture> updateLectureById(Lecture updateLecture, Long id) {
+//	}
+
+
+	
+	
+	
+	
+}

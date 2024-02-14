@@ -1,0 +1,9 @@
+insert into contents (login_id, nick_name, text, image) values ('abcde', 'cute', 'hello', 'image')
+
+insert into user(login_id, password, name, nickname, birth_Date, gender, email, phone_num, professor_intro, professor_resume, image, activated, userItem
+
+회원가입 양식
+
+insert into user (login_id, password, name, nickname, birthDate, gender, email, phone_num, professor_intro, professor_resume, image) values ('professor123', 'professor123@', '교수', 'professor', '1999-01-01', '남성', 'professor@gmail.com', '01012341234', '안녕하시렵니까.', '세계최강', 'profile.jpg')
+
+insert into user (login_id, password, name, nickname, birth_date, gender, email, phone_num, professor_intro, professor_resume, image, lectureCategory) values ('professor123', 'professor123@', '교수', 'professor1', '1999-01-01', '남성', 'professor@gmail.com', '01012341234', '안녕하시렵니까.', '세계최강', 'profile.jpg','');

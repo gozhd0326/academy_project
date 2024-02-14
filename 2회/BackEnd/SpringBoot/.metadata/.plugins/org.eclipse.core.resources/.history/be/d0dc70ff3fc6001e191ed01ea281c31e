@@ -1,0 +1,70 @@
+package com.dw.Monaca.dto;
+
+import java.math.BigDecimal;
+
+public class LectureSummaryDto {
+
+	private String category;
+	
+	private String lectureName;
+	
+	private boolean isFree;
+	
+	private BigDecimal totalPayment;
+
+	
+	public LectureSummaryDto() {
+		super();
+	}
+
+
+	public LectureSummaryDto(String category, String lectureName, boolean isFree, BigDecimal totalPayment) {
+		super();
+		this.category = category;
+		this.lectureName = lectureName;
+		this.isFree = isFree;
+		this.totalPayment = totalPayment;
+	}
+
+
+	public String getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+
+	public String getLectureName() {
+		return lectureName;
+	}
+
+
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+
+
+	public boolean isFree() {
+		return isFree;
+	}
+
+
+	public void setFree(boolean isFree) {
+		this.isFree = isFree;
+	}
+
+
+	public BigDecimal getTotalPayment() {
+		return totalPayment;
+	}
+
+
+	public void setTotalPayment(BigDecimal totalPayment) {
+		this.totalPayment = totalPayment;
+	}
+
+	
+}

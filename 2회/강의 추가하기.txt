@@ -1,0 +1,232 @@
+--- Lecture Category Workbench에서 추가하기 ---
+insert into lecture_category (category_name) values ("키오스크 사용법");
+insert into lecture_category (category_name) values ("웹사이트 사용법");
+insert into lecture_category (category_name) values ("모바일기기 사용법");
+insert into lecture_category (category_name) values ("국가 복지 및 민원 신청법");
+
+{
+"professor":"이현주",
+"lectureCategory":"키오스크 사용법",
+"lectureName":"키오스크 초급 1-1",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/jWxNBGg/1.jpg",
+"image":"https://i.ibb.co/Fhhs8Ts/Kiosk1.jpg",
+"lectureDescription":"키오스크 전반적 이해와 구성"
+} 
+
+{
+"professor":"이준호",
+"lectureCategory":"키오스크 사용법",
+"lectureName":"키오스크 초급 1-2",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/WKnQrmp/2.jpg",
+"image":"https://i.ibb.co/8N5xsyh/Kiosk3.jpg",
+"lectureDescription":"초보자를 위한 쉬운 사용법"
+} 
+
+{
+"professor":"이준호",
+"lectureCategory":"키오스크 사용법",
+"lectureName":"스마트한 대기",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/gFF7C5d/3.jpg",
+"image":"https://i.ibb.co/zstXGT6/Kiosk2.jpg",
+"lectureDescription":"키오스크를 활용한 시간절약"
+} 
+
+{
+"professor":"이현주",
+"lectureCategory":"키오스크 사용법",
+"lectureName":"키오스크 마스터",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/8cHDg25/4.jpg",
+"image":"https://i.ibb.co/zhGqKBJ/Kiosk4.jpg",
+"lectureDescription":"쉽고 빠른 디지털 자동화"
+} 
+
+{
+"professor":"김지영",
+"lectureCategory":"키오스크 사용법",
+"lectureName":"ATM 사용방법",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/T05FH6L/5.jpg",
+"image":"https://i.ibb.co/9hpwLpV/ATM1.jpg",
+"lectureDescription":"은행원보다 ATM을 더 자주 봐요."
+} 
+
+=====================================
+
+{
+"professor":"최윤서",
+"lectureCategory":"웹사이트 사용법",
+"lectureName":"웹생활의 즐거움",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/6XFMLMF/1.jpg",
+"image":"https://i.ibb.co/vjMHtbV/Web1.jpg",
+"lectureDescription":"두통유발 인터넷은 이제 안녕"
+} 
+
+{
+"professor":"정현우",
+"lectureCategory":"웹사이트 사용법",
+"lectureName":"인터넷 생활 해킹",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/QMV2p9g/2.jpg",
+"image":"https://i.ibb.co/hM78881/Web2.jpg",
+"lectureDescription":"웹사이트 활용의 비밀"
+} 
+
+{
+"professor":"김지영",
+"lectureCategory":"웹사이트 사용법",
+"lectureName":"웹사이트 전문가 되기",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/8MRKh1v/3.jpg",
+"image":"https://i.ibb.co/KWyrY4R/Web3.jpg",
+"lectureDescription":"효과적으로 빠르게 요령 익히기"
+} 
+
+{
+"professor":"김지영",
+"lectureCategory":"디지털 네비게이터",
+"lectureName":"웹생활의 즐거움",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/jMmNJtZ/Web4.jpg",
+"image":"https://i.ibb.co/42K8MgL/4.jpg",
+"lectureDescription":"웹사이트 세계로의 안내"
+} 
+
+{
+"professor":"김지영",
+"lectureCategory":"웹사이트 사용법",
+"lectureName":"웹기초부터 고급까지",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"웹사이트 실전 활용법"
+} 
+
+=====================================
+
+{
+"professor":"정수빈",
+"lectureCategory":"모바일기기 사용법",
+"lectureName":"편리한 모바일 라이프",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/Rz3YFsW/1.jpg ",
+"image":"https://i.ibb.co/KLcrZC4/Mobile1.jpg",
+"lectureDescription":"삶의 질을 향상 시켜주는 강의"
+} 
+
+{
+"professor":"강태영",
+"lectureCategory":"모바일기기 사용법",
+"lectureName":"모바일 업그레이드",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/DkfkcgQ/2.jpg",
+"image":" https://i.ibb.co/S3kg9W8/Mobile2.jpg",
+"lectureDescription":"초보자들의 모바일 기초사용법"
+} 
+
+{
+"professor":"정수빈",
+"lectureCategory":"모바일기기 사용법",
+"lectureName":"스마트폰 마법사",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/GkZD9Mn/3.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"마법처럼 쉬워지는 스마트폰"
+} 
+
+{
+"professor":"정수빈",
+"lectureCategory":"모바일기기 사용법",
+"lectureName":"모바일 생활 혁명",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"더 나은 사용법으로 일으킨 혁명"
+} 
+
+{
+"professor":"강태영",
+"lectureCategory":"모바일기기 사용법",
+"lectureName":"스마트폰 경험 디자인",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 
+
+=======================================
+
+{
+"professor":"강태영",
+"lectureCategory":"국가 복지 및 민원 신청법",
+"lectureName":"복지체계 이해하기",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 
+
+
+{
+"professor":"강태영",
+"lectureCategory":"국가 복지 및 민원 신청법",
+"lectureName":"건강한 사회 만들기",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 
+
+{
+"professor":"강태영",
+"lectureCategory":"국가 복지 및 민원 신청법",
+"lectureName":"시민참여의 시작",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 
+
+{
+"professor":"강태영",
+"lectureCategory":"국가 복지 및 민원 신청법",
+"lectureName":"집에서 민원 넣기",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 
+
+{
+"professor":"강태영",
+"lectureCategory":"시민중심의 민원",
+"lectureName":"스마트폰 경험 디자인",
+"price":0,
+"lecturePlayTime":6000,
+"video":"https://i.ibb.co/S7JBvwN/5.jpg",
+"image":"https://i.ibb.co/RQ9T6xh/Web5.jpg",
+"lectureDescription":"함께 경험을 그려나가 봐요"
+} 

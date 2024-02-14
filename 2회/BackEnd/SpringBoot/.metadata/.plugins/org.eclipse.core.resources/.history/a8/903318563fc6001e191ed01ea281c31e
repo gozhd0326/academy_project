@@ -1,0 +1,59 @@
+package com.dw.Monaca.dto;
+
+public class LectureSummerayDto {
+
+	private String category;
+	
+	private String lectureName;
+	
+	private boolean isFree;
+	
+	private long purchaseCount;
+
+	public LectureSummerayDto() {
+		super();
+	}
+
+	public LectureSummerayDto(String category, String lectureName, boolean isFree, long purchaseCount) {
+		super();
+		this.category = category;
+		this.lectureName = lectureName;
+		this.isFree = isFree;
+		this.purchaseCount = purchaseCount;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getLectureName() {
+		return lectureName;
+	}
+
+	public void setLectureName(String lectureName) {
+		this.lectureName = lectureName;
+	}
+
+	public boolean isFree() {
+		return isFree;
+	}
+
+	public void setFree(boolean isFree) {
+		this.isFree = isFree;
+	}
+
+	public long getPurchaseCount() {
+		return purchaseCount;
+	}
+
+	public void setPurchaseCount(long purchaseCount) {
+		this.purchaseCount = purchaseCount;
+	}
+	
+	
+	
+}

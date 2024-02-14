@@ -1,0 +1,146 @@
+https://replit.com/@ksw0102/20230911#index.html
+
+현 작업중
+https://www.seoulvinyl.com/ 사이트 참조하여 본인만의 스타일로 제작 예정
+
+css와 grid, img와 animation을 활용한 사이트 제작 예정
+화려하진 않으나 가독성이 뛰어나고 편리함에 중점을 둘 예정 
+
+최상단 title의 img는 rotate animation을 적용해 무한으로 돌아가게 만들어 
+사이트의 특성을 살림
+
+//
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300&family=Nanum+Gothic&family=Permanent+Marker&display=swap');
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: snow;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title {
+  position: fixed;
+  height: 15vh;
+  background-color: snow;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border-bottom: 1px solid red;
+}
+
+.record img {
+  width: 100px;
+  height: 100px;
+  animation: rotate_image 6s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.t-main {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 20px;
+  padding: 1rem;
+}
+
+.t-menu {
+  display: flex;
+  margin-left: auto;
+  font-size: 1.5rem;
+}
+
+.t-menu h2 {
+  padding: 1rem;
+}
+
+.product {
+  margin-top: 15vh;
+  height: 10vh;
+  background-color: snow;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+}
+
+.p-navi {
+  padding: 20px;
+  font-size: 1.5rem;
+}
+
+.p-navi:hover {
+  color: skyblue;
+  transition: 0.5s ease;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  display: grid;
+  grid-template-columns: repeat(5, 3fr);
+  justify-content: center;
+}
+
+.main img {
+  width: 250px;
+  height: 250px;
+  padding: 1rem;
+}
+
+.main img:hover {
+  transition: 0.3s;
+  width: 270px;
+  height: 270px;
+}
+
+.main h3 {
+  text-align: center;
+}
+
+.bottom {
+  width: 90vw;
+  height: 250px;
+  background-color: #ffffad;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.location {
+  width: 250px;
+  height: 250px;
+  background-color: #c47e7e;
+}
+
+.footer {
+  bottom: 0;
+  width: 250px;
+  height: 100px;
+  background-color: #6d6d27;
+  margin: 0 auto;
+}
+
+@keyframes rotate_image {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

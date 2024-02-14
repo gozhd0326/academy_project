@@ -1,0 +1,39 @@
+DataBases Table 
+
+jwtauthority.model
+=> User.java (@Table (user)) : @ManyToOne( private Character character, LectureCategory lectureCategory )
+ @Column( user_id , password, name, gender, email, birth_date, nickname, professer_resume, professor_intro, image, activated )
+
+------------> @ManyToMany @JoinTable ( user_authority ) : joinColumns ( @JoinColumn user_id ) , inverseJoinColumns ( @JoinColumn authority_name )
+
+=> Authority.java (@Table (authority)) : @Column( authority_name )
+
+
+monaca.model
+
+=> QandA.java (@Table(q_and_a)) : @ManyToOne( private User user, Lecture lecture) @Column( title, author_id, text, create_at)
+
+=> Character.java (@Table(character)) : @Column(character_name, character_gender, image)
+
+=> Grade.java (@Table(grade)) : @Column(grade_name)
+
+=> ExamPaper.java (@Table(exam_paper)) : @ManyToOne( private User user; )  @Column( title, exam_text, create-at, exam_image , is_checked )
+
+=> Examination.java (@Table(examination)) : @ManyToOne( private User user, Grade grade, ExamPaper examPaper; ) @ Column( answer_text, submit_date)
+
+=> LectureCategory.java (@Table(lecture_category) : @Column(category_name)
+
+=> Lecture.java (@Table(lecture)) : @ManyToOne(LectureCategory lectureCategory)
+@Column ( lecture_name, lecture_description, lecture_play_time, image, price)
+-----------------> @ManyToMany @JoinTable( lecture_cart ) : joinColumns(@JoinColumn lecture_id), inverseJoinColumns( @JoinColumn user_id)
+
+=> LectureHistory.java(@Table(lecture_history)) : @ManyToOne( private User user , Lecture lecture;) @Column( last_date)
+
+=> Attendance.java ( @Table(attendance)) : @ManyToOne( private User user) @Column(time_stamp)
+
+=>ItemShopCategory.java ( @ Table(itme_shop_category) : @Column(category_name)
+
+=> ItemShop.java ( @Table(item_shop) : @ManyToOne ( private ItemShopCategory itmeShopCategory;) @Column ( item_name, image, price)
+------------------>@ManyToMany @JoinTable(item_cart) : joinColumns( @JoinColumn item_shop_id), inverseJoinColumns( @JoinColumn user_id ) 
+
+=>UserItem.java (@Table(user_item) : @ManyToOne( private ItemShop itemShop, User user;) @Column(is_wearing)

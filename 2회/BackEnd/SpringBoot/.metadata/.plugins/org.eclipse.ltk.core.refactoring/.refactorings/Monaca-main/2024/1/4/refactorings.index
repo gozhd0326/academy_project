@@ -1,0 +1,33 @@
+1705911394677	Rename type 'ClassRoomDto'
+1706055573551	Delete element
+1706055579657	Delete element
+1706055586089	Delete element
+1706055593167	Delete element
+1706055600782	Delete element
+1706057592201	Rename type 'Exam'
+1706057604961	Rename type 'ExamServiceImpl'
+1706057623629	Rename type 'ExamService'
+1706057637037	Rename type 'ExamRepository'
+1706057665270	Rename type 'ExamDto'
+1706057676124	Delete element
+1706057687788	Rename type 'ExamController'
+1706140274531	Rename type 'Exam'
+1706140287926	Rename type 'ExamRepository'
+1706140300828	Rename type 'ExamService'
+1706140310726	Rename type 'ExamServiceImpl'
+1706140319753	Rename type 'ExamController'
+1706140332131	Rename type 'ExamQuestionController'
+1706140364571	Rename type 'ExamDto'
+1706140375339	Rename type 'ExamQuestionDto'
+1706140383697	Rename type 'ExamQuestionStudentDto'
+1706140421790	Rename type 'ExamQuestionRepository'
+1706140431864	Rename type 'ExamQuestionService'
+1706140440163	Rename type 'ExamQuestionServiceImpl'
+1706228409649	Delete element
+1706228437345	Delete element
+1706228447316	Delete element
+1706228456983	Delete element
+1706228460265	Delete element
+1706228471881	Delete element
+1706228476025	Delete element
+1706231169499	Delete element

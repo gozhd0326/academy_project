@@ -1,0 +1,4 @@
+user 안에서의 등급( authority와는 별개)
+-> candy 맛으로 category를 만들고
+-> user와 candy맛 테이블 을 받아오는 entity와 service, serviceImpl,controller 생성
+-> 등급에 따라 candy_point도 지급, 유료 강의 무료로 전환 혜택 부여

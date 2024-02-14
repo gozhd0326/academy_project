@@ -1,0 +1,51 @@
+1. 최근 시청 강의 ( o ) 
+최근 시청 강의가 갱신 = timeStamp가 갱신이 되어야 함
+ClassRoom에 timeStamp가 추가 되어야 함.
+
+2. 시험 답안지 ( 8번 참고 )
+교수가 시험을 등록 하려면, 답안지도 등록이 필요함
+교수용 답안지는 교수만 확인이 가능하게 해야함
+(user한테 시험지가 보여질 때, 답안지가 같이 딸려가지 않게 주의)
+채점하는 페이지도 생성이 필요 
+시험지 문제에는 객관식만 들어감
+
+3. 마이페이지 3종류 필요 (관리자, 교수, 학생)
+Figma로도 3종류를 보여줘야 함(어떻게 제작해야 할지)
+그러면 리액트 컴포넌트도 3개를 사용 = 3개 사용
+코드만 비슷하게 수정하면 가능할듯?
+관리자랑 교수랑 밀접하게 제작 = 사용에 용이하게
+  
+
+4. 전체 QnA 알림
+QnA New : 알림에서는 reply가 달리기 전까지는 new가 떠있고, Reply가 달리면 new가 사라지게 끔
+Reply New : 일정기간(3일) 적용하여 new가 사라지게 끔
+질문이 달렸을 때 qna에 new가 한 번 뜨고, 교수가 reply를 등록 -> qna new 변동없음 -> new 3일 뒤 사라짐
+
+5. 백엔드 구조 ( o )
+ClassRoom과 LectureHistory에 is_completed는 필요가 없다고 하심.
+
+6. userService에서 회원 탈퇴 기능 구현
+
+7. 각 과목별 수강하는 학생 수를 구할 수 있는 로직 구현
+
+8. 시험은 강의별 1개이기 때문에 lecture별로 모아보면 그 강의의 시험(exam_paper)이 됨 ( o )
+
+-exampaper에서는 시험문제를 String형식으로 객체에 담아(한 문항당 한 객체에) 보내고
+그걸 프론트에서 제이슨화(parse.int)하여 제이슨 형태로 보낸다.. 
+- 결론 : exampaper에는 lectureId, examTitle,  examImage, examText(문항) , exam보기란, examCorrectAnswer(각 문항의 정답), createAt(시험지생성일자) 이 필요함
+ 
+- examination에서는 어떤 유저(userId)의 객체에 한 문항(exampaperId)의 answertext(정답)이 있어야 되고 그 안에 그 문항이 맞았는지 틀렸는지 볼 수 있는 score(boolean),
+ garade는 Lecture와 user와 garde가 연결된 상태로 하나의 테이블을 가지고 있어야 함.
+(exampaper는 각 문항이기 때문에 같은 Lecture로 모아놓은 exampaperId의 모음이 그 lecture의 시험지이기 때문) 별도로 관리..!!
+- 결론 : examination에는 userId, exampaperId(각 문항의 Id), answertext(각 문항별 답안), score(boolean), 이  필요함.
+
+-  grade와 관련된 부분은 같은 lectureId를 가진 exampaperId들의 score를 점수로 합산해 어느 부분(grade)에 해당하는지를 봐야 되기 때문에
+grade(grade의 이름, 해당점수범위)가 있는 테이블과 lectureId(각 강의별 성적이기 때문), userId(어떤 유저의 grade인지 알기 위함)를 다 가지고 있는
+새로운 entity가 필요하다.
+- 결론 : user_lecture_grade(임시명) 에는 gradeId, lectureId, userId 가 있어야 함.
+
+- 작동1 : user가 examination을 submit button을 눌러 제출하게 되면 examination의 내용과 더불어 
+examination의 answertext와 exampaper의 correctAnswer와 비교하여 score부분이 true인지 false인지 저장됨
+
+- 작동2 :  user의 exampaperId를 가지고(같은 lectureId를 받아오는 애들만) examination에서 score의 false나 true의 갯수를 세어
+grade의 조건에 맞는지 비교하여 각 grade를 부여 이것은 user_lecture_grade(임시명)에 저장됨 

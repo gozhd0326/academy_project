@@ -1,0 +1,96 @@
+#Discord -> #backend chat에 기록  
+
+
+-------- 23.11.08 --------
+깃허브 같은 저장소 함께 쓰기 : 
+https://fomaios.tistory.com/entry/Git-Github-%EA%B0%99%EC%9D%80-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%95%A8%EA%BB%98-%EC%93%B0%EA%B8%B0feat%ED%98%91%EC%97%85%ED%95%98%EA%B8%B0
+
+깃허브 협업하기 :
+https://discord.com/channels/1171612005921210438/1171638896023568444/1171649225923248239
+
+git config --global core.autocrlf true
+
+community => universe // rest API  === /universe (수정됨)
+
+231109 해야 할 일 1. git hub 공유 2. 코드 짜기 시작 (수정됨)
+2023년 11월 9일
+
+
+-------- 23.11.09 --------
+jre 버전 17로 꼭 바꾸기!!
+
+
+-------- 23.11.10 --------
+"^[a-zA-Z0-9]{2,8}$"
+[오전 9:45]
+^: 문자열의 시작을 나타냅니다.
+[a-zA-Z0-9]: 대문자(A-Z), 소문자(a-z), 숫자(0-9) 중 하나와 일치해야 합니다.
+{2,8}: 중괄호 내의 숫자 범위에 해당하는 길이의 문자열이어야 합니다. 여기서는 2에서 8 사이의 길이를 나타냅니다.
+$: 문자열의 끝을 나타냅니다.
+
+
+content(table)에서 delete 버튼을 눌렀을 때 bin(table)로 "이동" 즉, content(table)에서는 삭제, bin(table)에서는 생성 
+bin(table)에서 delete 버튼을 눌렀을 때 영구 "삭제" 즉, bin(table)에서 삭제 
+
+
+
+
+--------------------------------------------------------------------------------
+
+1. delete, update가 내 id에서만 발동이 되는지
+2. archive에서도 1번과 같은 현상이 보이는지
+<1, 2번이 문제가 없다면>
+1. content(table)에서 delete를 눌렀을 때, 정상적으로 bin(table)로 이동이 되는지
+ 1-1. content(table)에서는 삭제
+   1-1-1. archive에 들어간 content라면 동시에 삭제해야 함
+ 1-2. bin(table)에서는 생성
+2. bin(table)에서 delete를 눌렀을 때, 정상적으로  data가 삭제되는지
+3. bin(table)에서 recover를 눌렀을 때, bin(table)에서는 삭제, content(table)에서 (재)생성
+
+
+
+<1, 2번 확인 전 해야 할 일>
+
+1. content(table)에서 delete를 눌렀을 때, bin(table)로 이동시켜야 함
+   - content(table)에서는 숨김 or 삭제
+   - 내 id로 어디까지 삭제가 되는지 확인 작업을 거치고, 내 id로 내가 남긴 것만  삭제할 수 있는 코드를 고민
+
+2. content에서 delete를 눌렀을 때, archive에도 적용이 되는지 확인(workbench로 확인)
+3. bin(table)에서 recover를 눌렀을 때, bin(table)에서는 삭제, content(table)에서 (재)생성
+  - recover를 했을 때, content(table)에 re-upload(순서 동일)로 진행
+
+※ (현재) gameshop에서 A 게임을 장바구니에 담아 놨을 때, gamelist에서 A 게임을 삭제하면 장바구니는 오류
+
+
+1. content  -> bin : content = delete, bin = create > 한 단계 더 거치고 가자
+2. content = delete -> hide > 느림
+
+1. content -> bin : content = hide, bin = create > 빠르다
+
+"content -> bin : content = hide, bin = create" 원하는 결과
+hide = boolean형으로 true(뵘), false(안 뵘) 항목을 만들어서 bin으로 보낼 때 false로 바꾸고, recover했을 때는 true로 바꿈 
+
+
+<1, 2번 확인 전 해야 할 일>
+
+1. content(table)에서 delete를 눌렀을 때, bin(table)로 이동시켜야 함
+   - content(table)에서는 숨김(setHidden, isHidden)
+   - 내 id로 어디까지 삭제가 되는지 확인 작업을 거치고, 내 id로 내가 남긴 것만  삭제할 수 있는 코드를 고민
+
+2. content에서 delete를 눌렀을 때, archive에도 적용이 되는지 확인(workbench로 확인)
+  - 코드는 현재 완성 상태 -> workbench로 확인해야 함
+
+3. bin(table)에서 recover를 눌렀을 때, bin(table)에서는 삭제, content(table)에서 (재)생성
+  - recover를 했을 때, content(table)에 re-upload(순서 동일)로 진행
+
+3-1.
+- content, archive에서 hidden 상태 변경/조회 권한 부여
+- service에서도 그 권한을 사용하겠다고 부여
+- controller에서 언제 hidden 상태를 변경/조회할지
+- controller에서 hidden 상태가 변경되면 어떤 현상이 벌어지는지
+bin에서 recover, delete를 실행했을 때, bin에서는 delete가 되어야 함
+
+setHidden: bool형으로 진행, true, false 중 하나를 부여하는 것
+isHidden: setHidden 값을 조회(is = get) 
+
+3-1을 월요일(13일)에 완료하고 workbench로 test
