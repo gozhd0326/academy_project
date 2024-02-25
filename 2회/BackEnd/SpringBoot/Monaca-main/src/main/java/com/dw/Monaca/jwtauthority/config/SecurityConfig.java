@@ -52,7 +52,19 @@ public class SecurityConfig {
 						authorizeHttpRequests -> authorizeHttpRequests
 						.requestMatchers("/api/authenticate").permitAll()
 								.requestMatchers("/api/signup/**").permitAll() 
-								.requestMatchers("/api/Lectrue").permitAll()
+								.requestMatchers("/api/lecture/all").permitAll()
+								.requestMatchers("/api/lecture/professor/{professorName}").permitAll()
+								.requestMatchers("/api/lecture/professorInfo/{id}").permitAll()
+								.requestMatchers("/api/lecture/lectureCategory/{categoryName}").permitAll()
+								.requestMatchers("/api/lecture/paid").permitAll()
+								.requestMatchers("/api/lecture/id/{id}").permitAll()
+								.requestMatchers("/api/lecture/free").permitAll()
+								.requestMatchers("/api/lecture/counts/lectureId/{lectureId}").permitAll()
+								.requestMatchers("/api/apply/professor").permitAll()
+								.requestMatchers("/api/lecture/professor/list/{lectureCategoryName}").permitAll()
+								.requestMatchers("/api/teaching/professorName/{professorName}").permitAll()
+								.requestMatchers("/api/part-of-user/{loginId}").permitAll()
+								.requestMatchers("/api/lectureCategory/all").permitAll()
 								.anyRequest().authenticated() // 이새기들은 필수!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				)
 

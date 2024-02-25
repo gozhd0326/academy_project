@@ -212,8 +212,6 @@ const LectureInfo4 = styled.div`
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   /* border: 2px solid black;
-   background-color: lightblue; */
    & h2 {
       padding-top: 2rem;
       font-size: 2rem;

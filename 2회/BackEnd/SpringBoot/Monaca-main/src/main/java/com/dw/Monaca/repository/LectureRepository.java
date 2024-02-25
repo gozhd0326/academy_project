@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.dw.Monaca.jwtauthority.model.User;
 import com.dw.Monaca.model.Lecture;
@@ -30,7 +32,9 @@ public interface LectureRepository extends JpaRepository<Lecture, Long> {
 	// price가 0원인 무료 Lecture List 찾기
 	List<Lecture> findByPrice(int price);
 
-
+	// 강의 카테고리를 인자로 받아, 해당 카테고리에서 강의를 진행하는 교수들의 리스트를 반환. 여기서 'DISTINCT' 키워드는 중복된 교수를 제거하는 역할
+	@Query("SELECT DISTINCT l.professor FROM Lecture l WHERE l.lectureCategory = :category")
+	List<User> findDistinctProfessorsByLectureCategory(@Param("category") LectureCategory category);
 
 
 

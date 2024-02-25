@@ -389,11 +389,11 @@ public class ClassRoomServiceImpl implements ClassRoomService{
 	
 	
 	 // 특정 강의를 수강 중인 사람들의 수를 조회하는 메서드
-	public ResponseDto<Long> getParticipantCountByLectureName(String lectureName) {
-	    Optional<Lecture> lectureOptional = lectureRepository.findByLectureName(lectureName);
+	public ResponseDto<Long> getParticipantCountByLectureId(Long lectureId) {
+	  Optional<Lecture> lectureOptional = lectureRepository.findById(lectureId);
 
 	    if (lectureOptional.isEmpty()) {
-	        throw new InvalidRequestException("Lecture Empty", "해당 이름의 강의가 존재하지 않습니다.");
+	        throw new InvalidRequestException("Lecture Empty", "해당 id의 강의가 존재하지 않습니다.");
 	    }
 
 	    Lecture lecture = lectureOptional.get();

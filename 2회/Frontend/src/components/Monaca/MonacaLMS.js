@@ -142,239 +142,188 @@ import { WatchTheLecture } from "./Student/WatchTheLecture";
 import { AdminShop } from "./Admins/AdminShop";
 
 const Container = styled.div`
-   width: 100vw;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const client = new QueryClient();
 export const MonacaContext = createContext();
 export function MonacaLMS() {
-   const [isLoggedIn, setIsLoggedIn] = useState(false);
-   const [showIntro, setShowIntro] = useState(true);
-   const [loginState, setLoginState] = useState(
-      JSON.parse(sessionStorage.getItem("loginState"))
-   );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
+  const [loginState, setLoginState] = useState(
+    JSON.parse(sessionStorage.getItem("loginState"))
+  );
 
-   useEffect(() => {
-      const storedLoginState = JSON.parse(sessionStorage.getItem("loginState"));
-      if (storedLoginState && storedLoginState.id) {
-         setIsLoggedIn(true);
-      }
-   }, []);
-   return (
-      <>
-         <MonacaContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-            <BrowserRouter>
-               <Container>
-                  <div>
-                     <Routes>
-                        {showIntro && (
-                           <Route
-                              index
-                              element={<Intro setShowIntro={setShowIntro} />}
-                           />
-                        )}
-                        <Route index element={<Main />} />
-                        <Route path="/main" element={<Main />} />
-                        <Route
-                           path="/student-register"
-                           element={<StudentRegister />}
-                        />
-                        <Route
-                           path="professor-register"
-                           element={<ProfessorRegister />}
-                        />
-                        <Route path="pf-room" element={<ProfessorRoom />} />
-                        <Route path="message" element={<Message />} />
-                        <Route path="cs-center" element={<CsCenter />} />
-                        <Route path="lecture-list" element={<LectureList />} />
-                        <Route path="lecture-info" element={<LectureInfo />} />
+  useEffect(() => {
+    const storedLoginState = JSON.parse(sessionStorage.getItem("loginState"));
+    if (storedLoginState && storedLoginState.id) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+  return (
+    <>
+      <MonacaContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <BrowserRouter>
+          <Container>
+            <div>
+              <Routes>
+                {showIntro && (
+                  <Route
+                    index
+                    element={<Intro setShowIntro={setShowIntro} />}
+                  />
+                )}
 
-                        <Route path="logout" element={<Logout />} />
-                        <Route
-                           path="professor-list"
-                           element={<ProfessorList />}
-                        />
+                <Route path="/" element={<NavBar />}>
+                  <Route index element={<Main />} />
+                  <Route path="/notice" element={<Notice />} />
+                  <Route path="/lecture-list" element={<LectureList />} />
+                  <Route path="/grade-guide" element={<GradeGuide />} />
+                  <Route path="/user-room" element={<UserRoom />} />
+                  <Route path="/message" element={<Message />} />
+                  <Route path="/out-box" element={<OutBox />} />
+                  <Route path="/in-box" element={<InBox />} />
+                  <Route path="/out-box-detaile" element={<OutBoxDetaile />} />
+                  <Route path="/in-box-detaile" element={<InBoxDetaile />} />
+                </Route>
+                <Route path="/student-register" element={<StudentRegister />} />
+                <Route
+                  path="professor-register"
+                  element={<ProfessorRegister />}
+                />
+                <Route path="pf-room" element={<ProfessorRoom />} />
+                <Route path="cs-center" element={<CsCenter />} />
+                <Route path="lecture-info" element={<LectureInfo />} />
 
-                        <Route
-                           path="employee"
-                           element={<ProfessorEmployee />}
-                        />
-                        <Route path="my-cart" element={<Cart />} />
-                        <Route path="notice" element={<Notice />} />
-                        <Route path="message" element={<Message />} />
-                        <Route path="pf-lngmgmt" element={<LearningMgmt />} />
-                        <Route path="stud-mgmt" element={<StudentMgmt />} />
-                        <Route path="material" element={<Material />} />
-                        <Route path="grade-guide" element={<GradeGuide />} />
-                        <Route path="lecture-qna" element={<LectureQnA />} />
-                        <Route
-                           path="lecture-notice"
-                           element={<LectureNotice />}
-                        />
-                        <Route path="exam-paper" element={<ExamPaper />} />
-                        <Route path="user-room" element={<UserRoom />} />
-                        <Route path="user-lngmgmt" element={<UserLrngMgmt />} />
-                        <Route
-                           path="user-coursemgmt"
-                           element={<UserCourseMgmt />}
-                        />
-                        <Route path="out-box" element={<OutBox />} />
-                        <Route path="in-box" element={<InBox />} />
-                        <Route path="item-shop" element={<ItemShop />} />
-                        <Route path="pf-profile" element={<PfsProfile />} />
-                        <Route
-                           path="out-box-detaile"
-                           element={<OutBoxDetaile />}
-                        />
-                        <Route
-                           path="in-box-detaile"
-                           element={<InBoxDetaile />}
-                        />
-                        <Route path="do-qna" element={<DoQnA />} />
-                        <Route path="kiosk-1" element={<Kiosk1 />} />
-                        <Route path="kiosk-2" element={<Kiosk2 />} />
-                        <Route path="kiosk-3" element={<Kiosk3 />} />
-                        <Route path="kiosk-4" element={<Kiosk4 />} />
-                        <Route path="kiosk-5" element={<Kiosk5 />} />
-                        <Route path="kiosk1-qna" element={<Kiosk1QnA />} />
-                        <Route path="kiosk2-qna" element={<Kiosk2QnA />} />
-                        <Route path="kiosk3-qna" element={<Kiosk3QnA />} />
-                        <Route path="kiosk4-qna" element={<Kiosk4QnA />} />
-                        <Route path="kiosk5-qna" element={<Kiosk5QnA />} />
-                        <Route path="mob-1" element={<Mob1 />} />
-                        <Route path="mob-2" element={<Mob2 />} />
-                        <Route path="mob-3" element={<Mob3 />} />
-                        <Route path="mob-4" element={<Mob4 />} />
-                        <Route path="mob-5" element={<Mob5 />} />
-                        <Route path="mobile1-qna" element={<Mobile1QnA />} />
-                        <Route path="mobile2-qna" element={<Mobile2QnA />} />
-                        <Route path="mobile3-qna" element={<Mobile3QnA />} />
-                        <Route path="mobile4-qna" element={<Mobile4QnA />} />
-                        <Route path="mobile5-qna" element={<Mobile5QnA />} />
-                        <Route path="web-1" element={<Web1 />} />
-                        <Route path="web-2" element={<Web2 />} />
-                        <Route path="web-3" element={<Web3 />} />
-                        <Route path="web-4" element={<Web4 />} />
-                        <Route path="web-5" element={<Web5 />} />
-                        <Route path="web1-qna" element={<Web1QnA />} />
-                        <Route path="web2-qna" element={<Web2QnA />} />
-                        <Route path="web3-qna" element={<Web3QnA />} />
-                        <Route path="web4-qna" element={<Web4QnA />} />
-                        <Route path="web5-qna" element={<Web5QnA />} />
-                        <Route path="wel-1" element={<Wel1 />} />
-                        <Route path="wel-2" element={<Wel2 />} />
-                        <Route path="wel-3" element={<Wel3 />} />
-                        <Route path="wel-4" element={<Wel4 />} />
-                        <Route path="wel-5" element={<Wel5 />} />
-                        <Route path="wel1-qna" element={<Welfare1QnA />} />
-                        <Route path="wel2-qna" element={<Welfare2QnA />} />
-                        <Route path="wel3-qna" element={<Welfare3QnA />} />
-                        <Route path="wel4-qna" element={<Welfare4QnA />} />
-                        <Route path="wel5-qna" element={<Welfare5QnA />} />
-                        <Route path="kioskpf1" element={<KioskPf1 />} />
-                        <Route path="kioskpf2" element={<KioskPf2 />} />
-                        <Route path="kioskpf3" element={<KioskPf3 />} />
-                        <Route path="mobpf1" element={<MobPf1 />} />
-                        <Route path="mobpf2" element={<MobPf2 />} />
-                        <Route path="webpf1" element={<WebPf1 />} />
-                        <Route path="webpf2" element={<WebPf2 />} />
-                        <Route path="welpf1" element={<WelPf1 />} />
-                        <Route path="welpf2" element={<WelPf2 />} />
-                        <Route path="do-kiosk-q1" element={<DoKioskQ1 />} />
-                        <Route path="do-kiosk-q2" element={<DoKioskQ2 />} />
-                        <Route path="do-kiosk-q3" element={<DoKioskQ3 />} />
-                        <Route path="do-kiosk-q4" element={<DoKioskQ4 />} />
-                        <Route path="do-kiosk-q5" element={<DoKioskQ5 />} />
-                        <Route path="do-web-q1" element={<DoWebQ1 />} />
-                        <Route path="do-web-q2" element={<DoWebQ2 />} />
-                        <Route path="do-web-q3" element={<DoWebQ3 />} />
-                        <Route path="do-web-q4" element={<DoWebQ4 />} />
-                        <Route path="do-web-q5" element={<DoWebQ5 />} />
-                        <Route path="do-mob-q1" element={<DoMobQ1 />} />
-                        <Route path="do-mob-q2" element={<DoMobQ2 />} />
-                        <Route path="do-mob-q3" element={<DoMobQ3 />} />
-                        <Route path="do-mob-q4" element={<DoMobQ4 />} />
-                        <Route path="do-mob-q5" element={<DoMobQ5 />} />
-                        <Route path="do-wel-q1" element={<DoWelQ1 />} />
-                        <Route path="do-wel-q2" element={<DoWelQ2 />} />
-                        <Route path="do-wel-q3" element={<DoWelQ3 />} />
-                        <Route path="do-wel-q4" element={<DoWelQ4 />} />
-                        <Route path="do-wel-q5" element={<DoWelQ5 />} />
-                        <Route path="stud-class-room" element={<ClassRoom />} />
-                        <Route
-                           path="cp-lectures"
-                           element={<CompletedLecture />}
-                        />
-                        <Route
-                           path="reged-lectures"
-                           element={<RegisteredLecture />}
-                        />
-                        <Route
-                           path="upload-lecture"
-                           element={<UploadLecture />}
-                        />
-                        <Route
-                           path="confirm"
-                           element={<RegistrationConfirm />}
-                        />
-                        <Route path="info-ui" element={<InfoUi />} />
-                        <Route path="admin-bar" element={<AdminBar />} />
-                        <Route path="admin-room" element={<AdminRoom />} />
-                        <Route path="admin-lmgnt" element={<AdminLMgnt />} />
-                        <Route
-                           path="write-a-notice"
-                           element={<WriteaNotice />}
-                        />
-                        <Route path="admin-notice" element={<AdminNotice />} />
-                        <Route
-                           path="kiosk1-notice"
-                           element={<Kiosk1Notice />}
-                        />
-                        <Route
-                           path="kiosk2-notice"
-                           element={<Kiosk2Notice />}
-                        />
-                        <Route
-                           path="kiosk3-notice"
-                           element={<Kiosk3Notice />}
-                        />
-                        <Route
-                           path="kiosk4-notice"
-                           element={<Kiosk4Notice />}
-                        />
-                        <Route
-                           path="kiosk5-notice"
-                           element={<Kiosk5Notice />}
-                        />
-                        <Route path="web1-notice" element={<Web1Notice />} />
-                        <Route path="web2-notice" element={<Web2Notice />} />
-                        <Route path="web3-notice" element={<Web3Notice />} />
-                        <Route path="web4-notice" element={<Web4Notice />} />
-                        <Route path="web5-notice" element={<Web5Notice />} />
-                        <Route path="mob1-notice" element={<Mob1Notice />} />
-                        <Route path="mob2-notice" element={<Mob2Notice />} />
-                        <Route path="mob3-notice" element={<Mob3Notice />} />
-                        <Route path="mob4-notice" element={<Mob4Notice />} />
-                        <Route path="mob5-notice" element={<Mob5Notice />} />
-                        <Route path="wel1-notice" element={<Wel1Notice />} />
-                        <Route path="wel2-notice" element={<Wel2Notice />} />
-                        <Route path="wel3-notice" element={<Wel3Notice />} />
-                        <Route path="wel4-notice" element={<Wel4Notice />} />
-                        <Route path="wel5-notice" element={<Wel5Notice />} />
-                        <Route path="admin-chart" element={<AdminChart />} />
-                        <Route
-                           path="watch-the-lecture"
-                           element={<WatchTheLecture />}
-                        />
-                        <Route path="admin-shop" element={<AdminShop />} />
-                     </Routes>
-                  </div>
-               </Container>
-            </BrowserRouter>
-         </MonacaContext.Provider>
-      </>
-   );
+                <Route path="logout" element={<Logout />} />
+                <Route path="professor-list" element={<ProfessorList />} />
+
+                <Route path="employee" element={<ProfessorEmployee />} />
+                <Route path="my-cart" element={<Cart />} />
+
+                <Route path="message" element={<Message />} />
+                <Route path="pf-lngmgmt" element={<LearningMgmt />} />
+                <Route path="stud-mgmt" element={<StudentMgmt />} />
+                <Route path="material" element={<Material />} />
+                <Route path="lecture-qna" element={<LectureQnA />} />
+                <Route path="lecture-notice" element={<LectureNotice />} />
+                <Route path="exam-paper" element={<ExamPaper />} />
+                <Route path="user-lngmgmt" element={<UserLrngMgmt />} />
+                <Route path="user-coursemgmt" element={<UserCourseMgmt />} />
+                <Route path="item-shop" element={<ItemShop />} />
+                <Route path="pf-profile" element={<PfsProfile />} />
+                <Route path="do-qna" element={<DoQnA />} />
+                <Route path="kiosk-1" element={<Kiosk1 />} />
+                <Route path="kiosk-2" element={<Kiosk2 />} />
+                <Route path="kiosk-3" element={<Kiosk3 />} />
+                <Route path="kiosk-4" element={<Kiosk4 />} />
+                <Route path="kiosk-5" element={<Kiosk5 />} />
+                <Route path="kiosk1-qna" element={<Kiosk1QnA />} />
+                <Route path="kiosk2-qna" element={<Kiosk2QnA />} />
+                <Route path="kiosk3-qna" element={<Kiosk3QnA />} />
+                <Route path="kiosk4-qna" element={<Kiosk4QnA />} />
+                <Route path="kiosk5-qna" element={<Kiosk5QnA />} />
+                <Route path="mob-1" element={<Mob1 />} />
+                <Route path="mob-2" element={<Mob2 />} />
+                <Route path="mob-3" element={<Mob3 />} />
+                <Route path="mob-4" element={<Mob4 />} />
+                <Route path="mob-5" element={<Mob5 />} />
+                <Route path="mobile1-qna" element={<Mobile1QnA />} />
+                <Route path="mobile2-qna" element={<Mobile2QnA />} />
+                <Route path="mobile3-qna" element={<Mobile3QnA />} />
+                <Route path="mobile4-qna" element={<Mobile4QnA />} />
+                <Route path="mobile5-qna" element={<Mobile5QnA />} />
+                <Route path="web-1" element={<Web1 />} />
+                <Route path="web-2" element={<Web2 />} />
+                <Route path="web-3" element={<Web3 />} />
+                <Route path="web-4" element={<Web4 />} />
+                <Route path="web-5" element={<Web5 />} />
+                <Route path="web1-qna" element={<Web1QnA />} />
+                <Route path="web2-qna" element={<Web2QnA />} />
+                <Route path="web3-qna" element={<Web3QnA />} />
+                <Route path="web4-qna" element={<Web4QnA />} />
+                <Route path="web5-qna" element={<Web5QnA />} />
+                <Route path="wel-1" element={<Wel1 />} />
+                <Route path="wel-2" element={<Wel2 />} />
+                <Route path="wel-3" element={<Wel3 />} />
+                <Route path="wel-4" element={<Wel4 />} />
+                <Route path="wel-5" element={<Wel5 />} />
+                <Route path="wel1-qna" element={<Welfare1QnA />} />
+                <Route path="wel2-qna" element={<Welfare2QnA />} />
+                <Route path="wel3-qna" element={<Welfare3QnA />} />
+                <Route path="wel4-qna" element={<Welfare4QnA />} />
+                <Route path="wel5-qna" element={<Welfare5QnA />} />
+                <Route path="kioskpf1" element={<KioskPf1 />} />
+                <Route path="kioskpf2" element={<KioskPf2 />} />
+                <Route path="kioskpf3" element={<KioskPf3 />} />
+                <Route path="mobpf1" element={<MobPf1 />} />
+                <Route path="mobpf2" element={<MobPf2 />} />
+                <Route path="webpf1" element={<WebPf1 />} />
+                <Route path="webpf2" element={<WebPf2 />} />
+                <Route path="welpf1" element={<WelPf1 />} />
+                <Route path="welpf2" element={<WelPf2 />} />
+                <Route path="do-kiosk-q1" element={<DoKioskQ1 />} />
+                <Route path="do-kiosk-q2" element={<DoKioskQ2 />} />
+                <Route path="do-kiosk-q3" element={<DoKioskQ3 />} />
+                <Route path="do-kiosk-q4" element={<DoKioskQ4 />} />
+                <Route path="do-kiosk-q5" element={<DoKioskQ5 />} />
+                <Route path="do-web-q1" element={<DoWebQ1 />} />
+                <Route path="do-web-q2" element={<DoWebQ2 />} />
+                <Route path="do-web-q3" element={<DoWebQ3 />} />
+                <Route path="do-web-q4" element={<DoWebQ4 />} />
+                <Route path="do-web-q5" element={<DoWebQ5 />} />
+                <Route path="do-mob-q1" element={<DoMobQ1 />} />
+                <Route path="do-mob-q2" element={<DoMobQ2 />} />
+                <Route path="do-mob-q3" element={<DoMobQ3 />} />
+                <Route path="do-mob-q4" element={<DoMobQ4 />} />
+                <Route path="do-mob-q5" element={<DoMobQ5 />} />
+                <Route path="do-wel-q1" element={<DoWelQ1 />} />
+                <Route path="do-wel-q2" element={<DoWelQ2 />} />
+                <Route path="do-wel-q3" element={<DoWelQ3 />} />
+                <Route path="do-wel-q4" element={<DoWelQ4 />} />
+                <Route path="do-wel-q5" element={<DoWelQ5 />} />
+                <Route path="stud-class-room" element={<ClassRoom />} />
+                <Route path="cp-lectures" element={<CompletedLecture />} />
+                <Route path="reged-lectures" element={<RegisteredLecture />} />
+                <Route path="upload-lecture" element={<UploadLecture />} />
+                <Route path="confirm" element={<RegistrationConfirm />} />
+                <Route path="info-ui" element={<InfoUi />} />
+                <Route path="admin-bar" element={<AdminBar />} />
+                <Route path="admin-room" element={<AdminRoom />} />
+                <Route path="admin-lmgnt" element={<AdminLMgnt />} />
+                <Route path="write-a-notice" element={<WriteaNotice />} />
+                <Route path="admin-notice" element={<AdminNotice />} />
+                <Route path="kiosk1-notice" element={<Kiosk1Notice />} />
+                <Route path="kiosk2-notice" element={<Kiosk2Notice />} />
+                <Route path="kiosk3-notice" element={<Kiosk3Notice />} />
+                <Route path="kiosk4-notice" element={<Kiosk4Notice />} />
+                <Route path="kiosk5-notice" element={<Kiosk5Notice />} />
+                <Route path="web1-notice" element={<Web1Notice />} />
+                <Route path="web2-notice" element={<Web2Notice />} />
+                <Route path="web3-notice" element={<Web3Notice />} />
+                <Route path="web4-notice" element={<Web4Notice />} />
+                <Route path="web5-notice" element={<Web5Notice />} />
+                <Route path="mob1-notice" element={<Mob1Notice />} />
+                <Route path="mob2-notice" element={<Mob2Notice />} />
+                <Route path="mob3-notice" element={<Mob3Notice />} />
+                <Route path="mob4-notice" element={<Mob4Notice />} />
+                <Route path="mob5-notice" element={<Mob5Notice />} />
+                <Route path="wel1-notice" element={<Wel1Notice />} />
+                <Route path="wel2-notice" element={<Wel2Notice />} />
+                <Route path="wel3-notice" element={<Wel3Notice />} />
+                <Route path="wel4-notice" element={<Wel4Notice />} />
+                <Route path="wel5-notice" element={<Wel5Notice />} />
+                <Route path="admin-chart" element={<AdminChart />} />
+                <Route path="watch-the-lecture" element={<WatchTheLecture />} />
+                <Route path="admin-shop" element={<AdminShop />} />
+              </Routes>
+            </div>
+          </Container>
+        </BrowserRouter>
+      </MonacaContext.Provider>
+    </>
+  );
 }

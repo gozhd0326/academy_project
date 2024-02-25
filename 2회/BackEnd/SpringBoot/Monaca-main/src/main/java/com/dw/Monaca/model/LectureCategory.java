@@ -18,16 +18,23 @@ public class LectureCategory {
 
 	@Column(name = "categoryName", length = 50)
 	private String categoryName;
-
+	
+	@Column
+	private String categoryDescription1;
+	
+	@Column
+	private String categoryDescription2;
 	
 	public LectureCategory() {
 		super();
 	}
 
-	public LectureCategory(Long id, String categoryName) {
+	public LectureCategory(Long id, String categoryName, String categoryDescription1, String categoryDescription2) {
 		super();
 		this.id = id;
 		this.categoryName = categoryName;
+		this.categoryDescription1 = categoryDescription1;
+		this.categoryDescription2 = categoryDescription2;
 	}
 
 	public Long getId() {
@@ -46,4 +53,21 @@ public class LectureCategory {
 		this.categoryName = categoryName;
 	}
 
+	public String getCategoryDescription1() {
+		return categoryDescription1;
+	}
+
+	public void setCategoryDescription1(String categoryDescription1) {
+		this.categoryDescription1 = categoryDescription1;
+	}
+
+	public String getCategoryDescription2() {
+		return categoryDescription2;
+	}
+
+	public void setCategoryDescription2(String categoryDescription2) {
+		this.categoryDescription2 = categoryDescription2;
+	}
+
+	
 }

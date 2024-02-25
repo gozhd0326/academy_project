@@ -4,6 +4,8 @@ package com.dw.Monaca.service;
 import java.util.List;
 
 import com.dw.Monaca.dto.LectureDto;
+import com.dw.Monaca.dto.LectureListDto;
+import com.dw.Monaca.dto.ProfessorDto;
 import com.dw.Monaca.dto.ResponseDto;
 import com.dw.Monaca.model.Lecture;
 
@@ -11,19 +13,19 @@ import com.dw.Monaca.model.Lecture;
 public interface LectureService {
 	
 	// 모든 Lecture 불러오기
-	ResponseDto<List<LectureDto>> getAllLecture();
+	ResponseDto<List<LectureListDto>> getAllLecture();
 	
 	// Lecture 카테고리 별 불러오기
-	ResponseDto<List<LectureDto>> getAllLectureByCategoryName(String categoryName);
+	ResponseDto<List<LectureListDto>> getAllLectureByCategoryName(String categoryName);
 	
 	// professor 별 불러오기
-	ResponseDto<List<LectureDto>> getAllLectureByProfessor(String professorName);
+	ResponseDto<List<LectureListDto>> getAllLectureByProfessor(String professorName);
 	
 	// 유료강의만 불러오기
-	ResponseDto<List<LectureDto>> getAllLectureByPaidLectures();
+	ResponseDto<List<LectureListDto>> getAllLectureByPaidLectures();
 
 	//무료 강의만 불러오기
-	ResponseDto<List<LectureDto>> getAllLectureByFreeLectures();
+	ResponseDto<List<LectureListDto>> getAllLectureByFreeLectures();
 	
 	// LecureID로 특정 강의 불러오기
 	ResponseDto<LectureDto> getLectureById(Long id);
@@ -33,6 +35,12 @@ public interface LectureService {
 	
 	// LectrueID로 특정 강의 삭제
 	ResponseDto<String> deleteLectureById(Long id);
+	
+	// LectureID로 특정 강의의 교수 불러오기
+	ResponseDto<ProfessorDto> getProfessorById(Long id);
+	
+	// LectureCategory로 특정 교수 리스트 불러오기
+	ResponseDto<List<ProfessorDto>> getProfessorByLectureCategoryName(String lectureCategoryName);
 	
 //	// LectureID로 특정 강의 수정
 //	public ResponseDto<Lecture> updateLectureById(Lecture updateLecture, Long id);

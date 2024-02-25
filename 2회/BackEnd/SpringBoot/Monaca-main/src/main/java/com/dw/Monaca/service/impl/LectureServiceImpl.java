@@ -3,12 +3,17 @@ package com.dw.Monaca.service.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dw.Monaca.dto.LectureCategoryDto;
 import com.dw.Monaca.dto.LectureDto;
+import com.dw.Monaca.dto.LectureListDto;
+import com.dw.Monaca.dto.ProfessorDto;
 import com.dw.Monaca.dto.ResponseDto;
 import com.dw.Monaca.enumStatus.ResultCode;
 import com.dw.Monaca.exception.InvalidRequestException;
@@ -48,35 +53,50 @@ public class LectureServiceImpl implements LectureService {
 
 	// 모든 Lecture 불러오기
 	@Override
-	public ResponseDto<List<LectureDto>> getAllLecture() {
+	public ResponseDto<List<LectureListDto>> getAllLecture() {
 		List<Lecture> lectures = lectureRepository.findAll();
 		if (lectures.isEmpty()) {
 			throw new InvalidRequestException("Lecture Empty", "강의가 존재하지 않습니다.");
 		}
-
-		List<LectureDto> lectureDtos = new ArrayList<>();
+		
+		List<LectureListDto> lectureDtos = new ArrayList<>();
 		lectures.stream().forEach(data -> {
-			LectureDto lectureDto = new LectureDto();
+			LectureListDto lectureDto = new LectureListDto();
 			lectureDto.setLectureCategory(data.getLectureCategory().getCategoryName());
-			lectureDto.setProfessor(data.getProfessor().getLoginId());
-			lectureDto.setLectureName(data.getLectureName());
-			lectureDto.setLectureDescription(data.getLectureDescription());
-			lectureDto.setId(data.getId());
-			lectureDto.setAuthor(data.getAuthor().getLoginId());
-			lectureDto.setLecturePlayTime(data.getLecturePlayTime());
-			lectureDto.setImage(data.getImage());
+			lectureDto.setProfessor(data.getProfessor().getName());
+			lectureDto.setSubTitle(data.getSubTitle());
 			lectureDto.setPrice(data.getPrice());
-			lectureDto.setVideo(data.getVideo());
-			lectureDto.setCreateAt(data.getCreateAt().toString());
+			lectureDto.setId(data.getId());
+			lectureDto.setImage(data.getImage());
 			lectureDtos.add(lectureDto);
-
 		});
+		
+		
+		List<LectureCategory> lecture_category = lectureCategoryRepository.findAll();
+		if (lecture_category.isEmpty()) {
+			throw new InvalidRequestException("Lecture Empty", "강의가 존재하지 않습니다.");
+		}
+		
+		List<LectureCategoryDto> lectureCategoryDtos = new ArrayList<>();
+		lecture_category.stream().forEach(data -> {
+			LectureCategoryDto lectureCategoryDto = new LectureCategoryDto();
+			lectureCategoryDto.setId(data.getId());
+			lectureCategoryDto.setCategoryName(data.getCategoryName());
+			lectureCategoryDto.setCategoryDescription1(data.getCategoryDescription1());
+			lectureCategoryDto.setCategoryDescription2(data.getCategoryDescription2());
+			lectureCategoryDtos.add(lectureCategoryDto);
+		});
+		
+		LectureListDto tmpDto = new LectureListDto();
+		tmpDto.setLectureCategoryList(lectureCategoryDtos);
+		lectureDtos.add(tmpDto);
+		
 		return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtos, ResultCode.SUCCESS.getMsg());
 	}
 
 	// Lecture 카테고리 별 불러오기
 	@Override
-	public ResponseDto<List<LectureDto>> getAllLectureByCategoryName(String categoryName) {
+	public ResponseDto<List<LectureListDto>> getAllLectureByCategoryName(String categoryName) {
 		LectureCategory category = lectureCategoryRepository.findByCategoryName(categoryName);
 		List<Lecture> lectures = lectureRepository.findByLectureCategory(category);
 
@@ -84,20 +104,16 @@ public class LectureServiceImpl implements LectureService {
 			throw new InvalidRequestException("Lecture Empty", "해당 카테고리의 강의가 존재하지 않습니다.");
 		}
 
-		List<LectureDto> lectureDtos = new ArrayList<>();
+		List<LectureListDto> lectureDtos = new ArrayList<>();
 		lectures.stream().forEach(data -> {
-			LectureDto lectureDto = new LectureDto();
+			LectureListDto lectureDto = new LectureListDto();
 			lectureDto.setLectureCategory(data.getLectureCategory().getCategoryName());
-			lectureDto.setProfessor(data.getProfessor().getLoginId());
+			lectureDto.setProfessor(data.getProfessor().getName());
 			lectureDto.setLectureName(data.getLectureName());
-			lectureDto.setLectureDescription(data.getLectureDescription());
-			lectureDto.setId(data.getId());
-			lectureDto.setAuthor(data.getAuthor().getLoginId());
-			lectureDto.setLecturePlayTime(data.getLecturePlayTime());
-			lectureDto.setImage(data.getImage());
+			lectureDto.setSubTitle(data.getSubTitle());
 			lectureDto.setPrice(data.getPrice());
-			lectureDto.setVideo(data.getVideo());
-			lectureDto.setCreateAt(data.getCreateAt().toString());
+			lectureDto.setId(data.getId());
+			lectureDto.setImage(data.getImage());
 			lectureDtos.add(lectureDto);
 
 		});
@@ -107,7 +123,7 @@ public class LectureServiceImpl implements LectureService {
 
 	// Professor 별 불러오기
 	@Override
-	public ResponseDto<List<LectureDto>> getAllLectureByProfessor(String professorName) {
+	public ResponseDto<List<LectureListDto>> getAllLectureByProfessor(String professorName) {
 		Optional<User> professorOptional = userRepository.findByName(professorName);
 		User professor = professorOptional.get();
 		List<Lecture> lectures = lectureRepository.findByProfessor(professor);
@@ -116,20 +132,15 @@ public class LectureServiceImpl implements LectureService {
 			throw new InvalidRequestException("Lecture Empty", "해당 교수님의 강의가 존재하지 않습니다.");
 		}
 
-		List<LectureDto> lectureDtos = new ArrayList<>();
+		List<LectureListDto> lectureDtos = new ArrayList<>();
 		lectures.stream().forEach(data -> {
-			LectureDto lectureDto = new LectureDto();
+			LectureListDto lectureDto = new LectureListDto();
 			lectureDto.setLectureCategory(data.getLectureCategory().getCategoryName());
 			lectureDto.setProfessor(data.getProfessor().getLoginId());
 			lectureDto.setLectureName(data.getLectureName());
-			lectureDto.setLectureDescription(data.getLectureDescription());
 			lectureDto.setId(data.getId());
-			lectureDto.setAuthor(data.getAuthor().getLoginId());
-			lectureDto.setLecturePlayTime(data.getLecturePlayTime());
 			lectureDto.setImage(data.getImage());
 			lectureDto.setPrice(data.getPrice());
-			lectureDto.setVideo(data.getVideo());
-			lectureDto.setCreateAt(data.getCreateAt().toString());
 			lectureDtos.add(lectureDto);
 
 		});
@@ -138,26 +149,22 @@ public class LectureServiceImpl implements LectureService {
 
 	// 유료강의만 불러오기
 	@Override
-	public ResponseDto<List<LectureDto>> getAllLectureByPaidLectures() {
+	public ResponseDto<List<LectureListDto>> getAllLectureByPaidLectures() {
 		List<Lecture> paidLectures = lectureRepository.findByPriceGreaterThan(0);
 		if (paidLectures.isEmpty()) {
 			throw new InvalidRequestException("Lecture Empty", "유료 강의가 존재하지 않습니다.");
 		}
 
-		List<LectureDto> lectureDtos = new ArrayList<>();
+		List<LectureListDto> lectureDtos = new ArrayList<>();
 		paidLectures.stream().forEach(data -> {
-			LectureDto lectureDto = new LectureDto();
+			LectureListDto lectureDto = new LectureListDto();
 			lectureDto.setLectureCategory(data.getLectureCategory().getCategoryName());
-			lectureDto.setProfessor(data.getProfessor().getLoginId());
+			lectureDto.setProfessor(data.getProfessor().getName());
 			lectureDto.setLectureName(data.getLectureName());
-			lectureDto.setLectureDescription(data.getLectureDescription());
 			lectureDto.setId(data.getId());
-			lectureDto.setAuthor(data.getAuthor().getLoginId());
-			lectureDto.setLecturePlayTime(data.getLecturePlayTime());
 			lectureDto.setImage(data.getImage());
+			lectureDto.setSubTitle(data.getSubTitle());
 			lectureDto.setPrice(data.getPrice());
-			lectureDto.setVideo(data.getVideo());
-			lectureDto.setCreateAt(data.getCreateAt().toString());
 			lectureDtos.add(lectureDto);
 
 		});
@@ -167,26 +174,21 @@ public class LectureServiceImpl implements LectureService {
 
 	// 무료 강의만 불러오기
 	@Override
-	public ResponseDto<List<LectureDto>> getAllLectureByFreeLectures() {
+	public ResponseDto<List<LectureListDto>> getAllLectureByFreeLectures() {
 		List<Lecture> freeLectures = lectureRepository.findByPrice(0);
 		if (freeLectures.isEmpty()) {
 			throw new InvalidRequestException("Lecture Empty", "무료 강의가 존재하지 않습니다.");
 		}
 
-		List<LectureDto> lectureDtos = new ArrayList<>();
+		List<LectureListDto> lectureDtos = new ArrayList<>();
 		freeLectures.stream().forEach(data -> {
-			LectureDto lectureDto = new LectureDto();
+			LectureListDto lectureDto = new LectureListDto();
 			lectureDto.setLectureCategory(data.getLectureCategory().getCategoryName());
-			lectureDto.setProfessor(data.getProfessor().getLoginId());
 			lectureDto.setLectureName(data.getLectureName());
-			lectureDto.setLectureDescription(data.getLectureDescription());
 			lectureDto.setId(data.getId());
-			lectureDto.setAuthor(data.getAuthor().getLoginId());
-			lectureDto.setLecturePlayTime(data.getLecturePlayTime());
 			lectureDto.setImage(data.getImage());
+			lectureDto.setSubTitle(data.getSubTitle());
 			lectureDto.setPrice(data.getPrice());
-			lectureDto.setVideo(data.getVideo());
-			lectureDto.setCreateAt(data.getCreateAt().toString());
 			lectureDtos.add(lectureDto);
 
 		});
@@ -204,8 +206,17 @@ public class LectureServiceImpl implements LectureService {
 		LectureDto lectureDto = new LectureDto();
 		lectureDto.setLectureCategory(lecture.getLectureCategory().getCategoryName());
 		lectureDto.setProfessor(lecture.getProfessor().getName());
+		lectureDto.setProfessorLoginId(lecture.getProfessor().getLoginId());
 		lectureDto.setLectureName(lecture.getLectureName());
-		lectureDto.setLectureDescription(lecture.getLectureDescription());
+		lectureDto.setSubTitle(lecture.getSubTitle());
+		lectureDto.setLectureDescription1(lecture.getLectureDescription1());
+		lectureDto.setLectureDescription2(lecture.getLectureDescription2());
+		lectureDto.setLectureDescription3(lecture.getLectureDescription3());
+		lectureDto.setLectureDescription4(lecture.getLectureDescription4());
+		lectureDto.setLearnigObjectives(lecture.getLearnigObjectives());
+		lectureDto.setLectureStructure(lecture.getLectureStructure());
+		lectureDto.setCourseTarget(lecture.getCourseTarget());
+		lectureDto.setBeforeListening(lecture.getBeforeListening());
 		lectureDto.setId(lecture.getId());
 		lectureDto.setAuthor(lecture.getAuthor().getLoginId());
 		lectureDto.setLecturePlayTime(lecture.getLecturePlayTime());
@@ -214,6 +225,8 @@ public class LectureServiceImpl implements LectureService {
 		lectureDto.setVideo(lecture.getVideo());
 		lectureDto.setCreateAt(lecture.getCreateAt().toString());
 
+		
+		
 		return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDto, ResultCode.SUCCESS.getMsg());
 	}
 
@@ -237,7 +250,15 @@ public class LectureServiceImpl implements LectureService {
 		lecture.setLecturePlayTime(lectureDto.getLecturePlayTime());
 		lecture.setVideo(lectureDto.getVideo());
 		lecture.setImage(lectureDto.getImage());
-		lecture.setLectureDescription(lectureDto.getLectureDescription());
+		lecture.setSubTitle(lectureDto.getSubTitle());
+		lecture.setLectureDescription1(lectureDto.getLectureDescription1());
+		lecture.setLectureDescription2(lectureDto.getLectureDescription2());
+		lecture.setLectureDescription3(lectureDto.getLectureDescription3());
+		lecture.setLectureDescription4(lectureDto.getLectureDescription4());
+		lecture.setLearnigObjectives(lectureDto.getLearnigObjectives());
+		lecture.setLectureStructure(lectureDto.getLectureStructure());
+		lecture.setCourseTarget(lectureDto.getCourseTarget());
+		lecture.setBeforeListening(lectureDto.getBeforeListening());
 
 		lectureRepository.save(lecture);
 //	    // 해당 강의를 가르치는 교수의 '가르치는 강의' 목록에 이 강의 추가
@@ -268,9 +289,55 @@ public class LectureServiceImpl implements LectureService {
 		return new ResponseDto<>(ResultCode.SUCCESS.name(), null, "강의가 성공적으로 삭제되었습니다.");
 	}
 
+	
+	// LectureID로 특정 강의의 교수 불러오기
+	@Override
+	public ResponseDto<ProfessorDto> getProfessorById(Long id){
+		Optional<Lecture> lectureOptional = lectureRepository.findById(id);
+		
+		if(lectureOptional.isEmpty()) {
+			throw new InvalidRequestException("Lecture Empty","해당 강의가 존재하지 않습니다.");
+		}
+		
+		Lecture lecture = lectureOptional.get();
+		User professorIntro = lecture.getProfessor();
+		
+		ProfessorDto professorDto = new ProfessorDto();
+		professorDto.setName(professorIntro.getName());
+		professorDto.setProfessorIntro(professorIntro.getProfessorIntro());
+		
+		return new ResponseDto<>(ResultCode.SUCCESS.name(),professorDto,ResultCode.SUCCESS.getMsg());
+		
+		
+	}
+	
+	// LectureCategory로 특정 교수 리스트 불러오기
+	@Override
+	public ResponseDto<List<ProfessorDto>> getProfessorByLectureCategoryName(String lectureCategoryName){
+		 LectureCategory category = lectureCategoryRepository.findByCategoryName(lectureCategoryName);
+	        if(category == null) {
+	            throw new InvalidRequestException ("Category not found","해당 카테고리를 찾을 수 없습니다.");
+	        }
+	        
+	        List<User> professors = lectureRepository.findDistinctProfessorsByLectureCategory(category);
+	        List<ProfessorDto> professorDtos = new ArrayList<>();
+	        for(User professor : professors) {
+	            ProfessorDto dto = new ProfessorDto();
+	            dto.setEmail(professor.getEmail());
+	            dto.setProfessorResume(professor.getProfessorResume());
+	            dto.setName(professor.getName());
+	            dto.setImage(professor.getImage());
+	            // Add other professor attributes here
+	            professorDtos.add(dto);
+	        }
+	        
+	        return new ResponseDto<>(ResultCode.SUCCESS.name(),professorDtos,ResultCode.SUCCESS.getMsg());
+	    }
+	}
+	
+	
 //	// LectureID로 특정 강의 수정
 //	@Override
 //	public ResponseDto<Lecture> updateLectureById(Lecture updateLecture, Long id) {
 //	}
 
-}

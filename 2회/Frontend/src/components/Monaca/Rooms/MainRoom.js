@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getCurrentUserWithAuthorities } from "./api";
-import { AdminRoom } from "./Admins/AdminRoom";
-import { ProfessorRoom } from "./Professors/ProfessorRoom";
-import { UserRoom } from "./Student/UserRoom";
+import { getCurrentUserWithAuthorities } from "../api";
+import { AdminRoom } from "../Admins/AdminRoom";
+import { ProfessorRoom } from "../Professors/ProfessorRoom";
+import { UserRoom } from "../Student/UserRoom";
 
-export function RoomMain() {
+export function MainRoom() {
   const [userRoles, setUserRole] = useState([]);
 
   useEffect(() => {

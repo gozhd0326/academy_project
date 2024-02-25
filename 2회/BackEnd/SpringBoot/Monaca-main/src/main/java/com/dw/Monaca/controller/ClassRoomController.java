@@ -105,11 +105,10 @@ public class ClassRoomController {
 	}
 
 	// 특정 강의를 수강 중인 사람들의 수를 조회
-	@GetMapping("/api/lecture/counts/lectureName/{lectureName}")
-	@PreAuthorize("hasAnyRole('ADMIN', 'PROFESSOR', 'USER')")
+	@GetMapping("/api/lecture/counts/lectureId/{lectureId}")
 	public ResponseEntity<ResponseDto<Long>> getParticipantCountByLectureName(
-			@PathVariable(name = "lectureName") String lectureName) {
-		return new ResponseEntity<>(classRoomServiceImpl.getParticipantCountByLectureName(lectureName), HttpStatus.OK);
+			@PathVariable(name = "lectureId") Long lectureId) {
+		return new ResponseEntity<>(classRoomServiceImpl.getParticipantCountByLectureId(lectureId), HttpStatus.OK);
 	}
 
 	// 유/무료 강의 전체에서 카테고리별 + 강의명별 로 각 강의를 듣는 사용자의 수가 얼마나 되는지

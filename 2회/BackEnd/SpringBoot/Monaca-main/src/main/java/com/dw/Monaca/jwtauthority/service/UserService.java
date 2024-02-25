@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dw.Monaca.dto.LectureDto;
+import com.dw.Monaca.dto.LectureListDto;
 import com.dw.Monaca.dto.ProfessorDto;
 import com.dw.Monaca.dto.ResponseDto;
 import com.dw.Monaca.dto.UserAuthorityDto;
@@ -84,6 +85,8 @@ public class UserService {
 		LectureDto lectureDto = new LectureDto();
 		lectureDto.setLectureCategory(lecture.getLectureCategory().getCategoryName());
 		lectureDto.setLectureName(lecture.getLectureName());
+		lectureDto.setImage(lecture.getImage());
+		lectureDto.setSubTitle(lecture.getSubTitle());
 		return lectureDto;
 	}
 	
@@ -302,12 +305,39 @@ public class UserService {
 	}
 
 	
-	// LoginId를 이용해 특정 유저 정보 받아오기
+	// LoginId를 이용해 특정 유저 정보 받아오기(관리자용)
 	@Transactional(readOnly = true)
 	public ResponseDto<UserDto> getUserWithAuthorities(String loginId) {
 	    UserDto userDto = UserDto.from(userRepository.findOneWithAuthoritiesByLoginId(loginId)
 	            .orElseThrow(() -> new InvalidRequestException(loginId, "user not found")));
 	    return new ResponseDto<>(ResultCode.SUCCESS.name(), userDto, ResultCode.SUCCESS.getMsg());
+	}
+	
+	// LoginId를 이용해 유저 정보 일부분을 받아오기(lectureInfo용)
+	@Transactional(readOnly = true)
+	public ResponseDto<ProfessorDto> getPartOfUserInfo(String loginId){
+		Optional<User> userOptional = userRepository.findByLoginId(loginId);
+		if(userOptional.isEmpty()) {
+			throw new InvalidRequestException("User Empty", "해당 로그인 아이디를 가진 유저가 존재하지 않습니다.");
+		}
+		
+		User user = userOptional.get();
+		// ProfeesorDto로 변환하는 함수
+	    ProfessorDto professorDto = new ProfessorDto();
+	    professorDto.setLoginId(user.getLoginId());
+	    professorDto.setName(user.getName());
+	    professorDto.setBirthDate(user.getBirthDate());
+	    professorDto.setEmail(user.getEmail());
+	    professorDto.setImage(user.getImage());
+	    professorDto.setProfessorIntro(user.getProfessorIntro());
+	    professorDto.setProfessorResume(user.getProfessorResume());
+	    Set<LectureDto> lectureDtoSet = user.getLecture().stream()
+	    	    .map(this::convertToLectureDto)
+	    	    .collect(Collectors.toSet());
+
+	    	professorDto.setLecture(lectureDtoSet);
+			
+		return new ResponseDto<>(ResultCode.SUCCESS.name(),professorDto,ResultCode.SUCCESS.getMsg());
 	}
 
 	// 현재 로그인한 유저의 권한 조회하기
@@ -478,54 +508,50 @@ public class UserService {
 	    }
 
 	    
-	    // Lecture를 LectureDto로 변환하는 함수
-	    public LectureDto convertLectureToDto(Lecture lecture) {
-	    	LectureDto lectureDto = new LectureDto();
-	    	lectureDto.setId(lecture.getId());
-	    	lectureDto.setAuthor(lecture.getAuthor().getName());
-	    	lectureDto.setCreateAt(lecture.getCreateAt().toString());
-	    	lectureDto.setImage(lecture.getImage());
-	    	lectureDto.setLectureCategory(lecture.getLectureCategory().getCategoryName());
-	    	lectureDto.setLectureDescription(lecture.getLectureDescription());
-	    	lectureDto.setLectureName(lecture.getLectureName());
-	    	lectureDto.setLecturePlayTime(lecture.getLecturePlayTime());
-	    	lectureDto.setPrice(lecture.getPrice());
-	    	lectureDto.setProfessor(lecture.getProfessor().getName());
-	    	lectureDto.setVideo(lecture.getVideo());
-	    	
-	    	return lectureDto;
+	    // LectureList를 LectureListDto로 변환하는 함수
+	    public LectureListDto convertLectureListToDto(Lecture lecture) {
+	        LectureListDto lectureListDto = new LectureListDto();
+	        lectureListDto.setId(lecture.getId());
+	        lectureListDto.setLectureCategory(lecture.getLectureCategory().getCategoryName());
+	        lectureListDto.setLectureName(lecture.getLectureName());
+	        lectureListDto.setSubTitle(lecture.getSubTitle());
+	        lectureListDto.setProfessor(lecture.getProfessor().getName()); 
+	        lectureListDto.setImage(lecture.getImage());
+	        lectureListDto.setPrice(lecture.getPrice());
+
+	        return lectureListDto;
 	    }
 	    
 	 // 찜 목록 보기
-	    public ResponseDto<List<LectureDto>> getWishLectures() {
+	    public ResponseDto<List<LectureListDto>> getWishLectures() {
 	        User user = getAuthenticatedUser();
 	        Set<Lecture> wishLectures = user.getWishLecture();
 	        
-	        List<LectureDto> lectureDtoList = wishLectures.stream()
-	                .map(this::convertLectureToDto)
+	        List<LectureListDto> lectureDtoList = wishLectures.stream()
+	                .map(this::convertLectureListToDto) // convertLectureToDto를 convertLectureListToDto로 변경
 	                .collect(Collectors.toList());
 	        
 	        return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtoList, "찜 목록을 성공적으로 가져왔습니다.");
 	    }
-	    
+
 	    // 강의 찜하기
-	    public ResponseDto<List<LectureDto>> saveWishLecture(Long lectureId) {
+	    public ResponseDto<List<LectureListDto>> saveWishLecture(Long lectureId) { // 반환 타입을 List<LectureDto>에서 List<LectureListDto>로 변경
 	       User user = getAuthenticatedUser();
 	       Lecture lecture = lectureRepository.findById(lectureId)
-	                .orElseThrow(() -> new InvalidRequestException("Lectrue Not Found","해당 강의가 없습니다."));
+	                .orElseThrow(() -> new InvalidRequestException("Lecture Not Found","해당 강의가 없습니다."));
 	        user.getWishLecture().add(lecture);
-	        List<LectureDto> lectureDtoList = user.getWishLecture().stream()
-	                .map(this::convertLectureToDto)
+	        List<LectureListDto> lectureDtoList = user.getWishLecture().stream()
+	                .map(this::convertLectureListToDto) // convertLectureToDto를 convertLectureListToDto로 변경
 	                .collect(Collectors.toList());
-
-
+	        
+	        return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtoList, "찜 목록에 강의를 성공적으로 추가했습니다.");
+	    }
 	    // userRepository.save(user); 
 	    // JPA가 영속성 컨텍스트를 관리하고 있으므로, 사실상 필요하지 않음. 
 	    // PA가 '영속 상태'에 있는 엔티티의 변경을 추적(이를 '더티 체킹'이라고 함)하고,
 	    // 트랜잭션 종료 시점에 이를 데이터베이스에 반영하기 때문임.
 //	        UserDto userDto = convertUserToDto(user);
-	        return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtoList, ResultCode.SUCCESS.getMsg()); 
-	    }
+	    
 
 	    // 강의 찜 해제하기
 	    @Transactional
@@ -542,32 +568,32 @@ public class UserService {
 
 	    
 	 // 현재 로그인한 교수가 가르치는 강의 조회하기
-	    public ResponseDto<List<LectureDto>> getTeachingLecturesByCurrentProfessor() {
+	    public ResponseDto<List<LectureListDto>> getTeachingLecturesByCurrentProfessor() {
 	        User currentUser = getAuthenticatedUser(); // 현재 인증된 사용자 가져오기
 	        List<Lecture> lectures = new ArrayList<>(currentUser.getLecture()); // 현재 사용자가 가르치는 강의 리스트 반환
 	        if(lectures.isEmpty()) {
-	        	throw new InvalidRequestException("Lecture Empty","강의가 존재하지 않습니다.");
+	            throw new InvalidRequestException("Lecture Empty","강의가 존재하지 않습니다.");
 	        }
-	        List<LectureDto> lectureDtoList = lectures.stream()
-	                .map(this::convertLectureToDto)
+	        List<LectureListDto> lectureDtoList = lectures.stream()
+	                .map(this::convertLectureListToDto) // convertLectureToDto를 convertLectureListToDto로 변경
 	                .collect(Collectors.toList());
 	        
 	        return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtoList, ResultCode.SUCCESS.getMsg());
 	    }
-
-	    // 특정 교수 이름으로 강의 조회하기
-	    public ResponseDto<List<LectureDto>> getTeachingLecturesByProfessorName(String professorName) {
+	    
+	 // 특정 교수 이름으로 강의 조회하기
+	    public ResponseDto<List<LectureListDto>> getTeachingLecturesByProfessorName(String professorName) {
 	        Optional<User> professorOptional = userRepository.findByName(professorName); // 교수 이름으로 사용자 조회
 	        if(professorOptional.isEmpty()) {
-	        	throw new InvalidRequestException("Professor Empty","해당 교수가 존재하지 않습니다.");
+	            throw new InvalidRequestException("Professor Empty","해당 교수가 존재하지 않습니다.");
 	        }
 	        User professor = professorOptional.get();
 	        List<Lecture> lectures = new ArrayList<>(professor.getLecture()); // 해당 교수가 가르치는 강의 리스트 반환
 	        if(lectures.isEmpty()) {
-	        	throw new InvalidRequestException("Lectures Empty","해당 교수가 가르치는 강의가 존재하지 않습니다.");
+	            throw new InvalidRequestException("Lectures Empty","해당 교수가 가르치는 강의가 존재하지 않습니다.");
 	        }
-	        List<LectureDto> lectureDtoList = lectures.stream()
-	                .map(this::convertLectureToDto)
+	        List<LectureListDto> lectureDtoList = lectures.stream()
+	                .map(this::convertLectureListToDto) // convertLectureToDto를 convertLectureListToDto로 변경
 	                .collect(Collectors.toList());
 	        return new ResponseDto<>(ResultCode.SUCCESS.name(), lectureDtoList, ResultCode.SUCCESS.getMsg());
 	    }

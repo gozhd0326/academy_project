@@ -46,7 +46,7 @@ public interface ClassRoomService {
 	ResponseDto<Map<String, List<StudentProgressDto>>> getStudentProgressByProfessor();
 	
 	 // 특정 강의를 수강 중인 사람들의 수를 조회
-	ResponseDto<Long> getParticipantCountByLectureName(String lectureName);
+	ResponseDto<Long> getParticipantCountByLectureId(Long lectureId);
 	
 	// 유/무료 강의 전체에서 카테고리별 + 강의명별 로 결제가 얼마나 되었는지 가져오기
 	ResponseDto<List<LectureSummaryDto>> getLectureSummary();
